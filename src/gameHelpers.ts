@@ -1,5 +1,5 @@
 import {STAGE} from './components/Stage/Stage';
-import { PLAYER } from './hooks/usePlayer';
+import { BLOCK } from './hooks/useBlock';
 
 import { STAGE_WIDTH, STAGE_HEIGHT } from './setup';
 import { TETROMINOS } from './setup';
@@ -11,16 +11,16 @@ export const randomTetromino = () => {
   return TETROMINOS[randTetromino];
 };
 
-export const isColliding = (player: PLAYER, stage: STAGE , {x : moveX, y : moveY} : {x: number, y: number}) => {
-  for (let y = 0; y < player.tetromino.length; y += 2) {
-    for (let x = 0; x < player.tetromino[y].length; x++) {
+export const isColliding = (block: BLOCK, stage: STAGE , {x : moveX, y : moveY} : {x: number, y: number}) => {
+  for (let y = 0; y < block.tetromino.length; y += 2) {
+    for (let x = 0; x < block.tetromino[y].length; x++) {
       // we ignore empty cells
-      if (player.tetromino[y][x] !== 0) {
+      if (block.tetromino[y][x] !== 0) {
         if (
           // check if we are outside the stage
-          !stage[y + player.pos.y + moveY] ||
-          !stage[y + player.pos.y + moveY][x + player.pos.x + moveX] ||
-          stage[y + player.pos.y + moveY][x + player.pos.x + moveX][1] !== 'clear'
+          !stage[y + block.pos.y + moveY] ||
+          !stage[y + block.pos.y + moveY][x + block.pos.x + moveX] ||
+          stage[y + block.pos.y + moveY][x + block.pos.x + moveX][1] !== 'clear'
         ) {
           return true;
         }

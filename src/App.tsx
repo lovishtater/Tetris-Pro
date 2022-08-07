@@ -7,7 +7,7 @@ import Stage from './components/Stage/Stage';
 import StartButton from './components/StartButton/StartButton';
 
 // Hooks
-import { usePlayer } from './hooks/usePlayer';
+import { useBlock } from './hooks/useBlock';
 import { useStage } from './hooks/useStage';
 import { useInterval } from './hooks/useInterval';
 
@@ -20,24 +20,24 @@ const App: React.FC = () => {
 
   const gameArea = useRef<HTMLDivElement>(null);
 
-  const {player, updatePlayerPos, resetPlayer} = usePlayer();
-  const {stage, setStage} = useStage(player, resetPlayer);
+  const {block, updateBlockPos, resetBlock, blockRotate} = useBlock();
+  const {stage, setStage} = useStage(block, resetBlock);
 
-  const movePlayer = (dir : number) => {
-    if (!isColliding(player, stage, {x: dir, y: 0})) {
-    updatePlayerPos({ x: dir, y: 0 , collided: false});
+  const moveBlock = (dir : number) => {
+    if (!isColliding(block, stage, {x: dir, y: 0})) {
+      updateBlockPos({x: dir, y: 0, collided: false});
     }
   }
 
   const move = ({ keyCode, repeat }: { keyCode: number, repeat: boolean }) : void => {
     if (keyCode === 37) {
-      movePlayer(-1);
+      moveBlock(-1);
     } else if (keyCode === 39) {
-      movePlayer(1);
+      moveBlock(1);
     } else if (keyCode === 40) {
       setDropTime(30)
     } else if (keyCode === 38 && !repeat) {
-      //
+      blockRotate(stage);
     }
   }
 
@@ -47,27 +47,27 @@ const App: React.FC = () => {
     }
   }
 
-  console.log(player);
+  console.log(block);
 
   const handleStartGame = () : void => {
     // focus the window 
     if(gameArea.current) gameArea.current.focus();
     setStage(createStage());
     setDropTime(1000);
-    resetPlayer();
+    resetBlock();
     setGameOver(false);
   }
 
   const drop = (): void => {
-    if (!isColliding(player, stage, {x: 0, y: 1})) {
-    updatePlayerPos({ x: 0, y: 1, collided: false });
+    if (!isColliding(block, stage, {x: 0, y: 1})) {
+      updateBlockPos({x: 0, y: 1, collided: false});
     } else {
       // game over
-      if(player.pos.y < 1) {
-      setGameOver(true);
-      setDropTime(null);
+      if (block.pos.y < 1) {
+        setGameOver(true);
+        setDropTime(null);
       }
-    updatePlayerPos({ x: 0, y: 0, collided: true });
+      updateBlockPos({x: 0, y: 0, collided: true});
     }
   }
 
