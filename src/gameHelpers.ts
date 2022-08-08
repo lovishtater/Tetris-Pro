@@ -12,7 +12,7 @@ export const randomTetromino = () => {
 };
 
 export const isColliding = (block: BLOCK, stage: STAGE , {x : moveX, y : moveY} : {x: number, y: number}) => {
-  for (let y = 0; y < block.tetromino.length; y += 2) {
+  for (let y = 0; y < block.tetromino.length; y++) {
     for (let x = 0; x < block.tetromino[y].length; x++) {
       // we ignore empty cells
       if (block.tetromino[y][x] !== 0) {

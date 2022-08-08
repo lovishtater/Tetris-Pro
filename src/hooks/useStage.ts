@@ -9,8 +9,8 @@ export const useStage = (block : BLOCK, resetBlock : () => void) => {
 
     useEffect(() => {
         if (!block.pos) return;
-
         setRowsCleared(0);
+
         const sweepRows = (newStage : STAGE) : STAGE => { 
             return newStage.reduce((ack, row) => {
                 if (row.findIndex(cell => cell[0] === 0) === -1) {
@@ -29,12 +29,11 @@ export const useStage = (block : BLOCK, resetBlock : () => void) => {
                 row.map(cell => (cell[1] === 'clear' ? [0,'clear']:cell )) as STAGECELL[]
     );
 
-
     // draw the tetromino
     block.tetromino.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                newStage[y + block.pos.y][x + block.pos.x] = [value, `${block.collided ? 'merged' : 'clear'}`];
+                newStage[y + block.pos.y][x + block.pos.x] = [value, `${block.collided ? 'merged' : 'clear'}`] as STAGECELL;
             }
         });
     });

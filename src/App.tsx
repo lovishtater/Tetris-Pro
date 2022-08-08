@@ -13,7 +13,7 @@ import { useInterval } from './hooks/useInterval';
 import { useGameStats } from './hooks/useGameStats';
 
 // Styles
-import { StyledTetrisWrapper, StyledTetris } from './App.styles';
+import {StyledTetrisWrapper, StyledTetris, GithubRepoButton, H1} from "./App.styles";
 
 const App: React.FC = () => {
   const [dropTime, setDropTime] = React.useState<null | number>(null);
@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const {block, updateBlockPos, resetBlock, blockRotate} = useBlock();
   const {stage, setStage, rowsCleared} = useStage(block, resetBlock);
   const {score, rows, level, setLevel, setScore, setRows} = useGameStats(rowsCleared);
+
   const moveBlock = (dir : number) => {
     if (!isColliding(block, stage, {x: dir, y: 0})) {
       updateBlockPos({x: dir, y: 0, collided: false});
@@ -43,14 +44,12 @@ const App: React.FC = () => {
   }
 
   const keyUp = ({ keyCode }: { keyCode: number }) : void => {
-    if(!gameOver) {
-    if(keyCode === 40) {
+    if(!gameOver && keyCode === 40) {
       setDropTime(1000);
-    }
   }
 }
 
-  console.log(block);
+  // console.log(block);
 
   const handleStartGame = () : void => {
     // focus the window 
@@ -90,12 +89,10 @@ const App: React.FC = () => {
   return (
     <StyledTetrisWrapper role='button' tabIndex={0} onKeyDown={move} onKeyUp={keyUp} ref={gameArea}>
       <StyledTetris>
+        <H1>Tetris Pro</H1>
         <div className="display">
           {gameOver ? (
-            <>
-            <Display gameOver={gameOver} text={'Game Over'} />
             <StartButton callback={handleStartGame} />
-            </>
           ) : (
             <>
               <Display text={`Score: ${score}`} gameOver={false} />
@@ -105,6 +102,9 @@ const App: React.FC = () => {
           )}
         </div>
         <Stage stage={stage} />
+      <a href="https://github.com/lovishtater/Tetris-Pro" target="_blank">
+        <img src="https://img.shields.io/github/stars/lovishtater/Tetris-Pro?style=social" alt="Github Stars" />
+      </a>
       </StyledTetris>
     </StyledTetrisWrapper>
   );
