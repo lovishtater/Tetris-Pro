@@ -10,6 +10,7 @@ import StartButton from './components/StartButton/StartButton';
 import { useBlock } from './hooks/useBlock';
 import { useStage } from './hooks/useStage';
 import { useInterval } from './hooks/useInterval';
+import { useGameStats } from './hooks/useGameStats';
 
 // Styles
 import { StyledTetrisWrapper, StyledTetris } from './App.styles';
@@ -21,8 +22,8 @@ const App: React.FC = () => {
   const gameArea = useRef<HTMLDivElement>(null);
 
   const {block, updateBlockPos, resetBlock, blockRotate} = useBlock();
-  const {stage, setStage} = useStage(block, resetBlock);
-
+  const {stage, setStage, rowsCleared} = useStage(block, resetBlock);
+  const {score, rows, level, setLevel, setScore, setRows} = useGameStats(rowsCleared);
   const moveBlock = (dir : number) => {
     if (!isColliding(block, stage, {x: dir, y: 0})) {
       updateBlockPos({x: dir, y: 0, collided: false});
@@ -42,6 +43,7 @@ const App: React.FC = () => {
   }
 
   const keyUp = ({ keyCode }: { keyCode: number }) : void => {
+    if(!gameOver) {
     if(keyCode === 40) {
       setDropTime(1000);
     }
@@ -55,10 +57,19 @@ const App: React.FC = () => {
     setStage(createStage());
     setDropTime(1000);
     resetBlock();
+    setScore(0);
+    setRows(0);
+    setLevel(0);
     setGameOver(false);
   }
 
   const drop = (): void => {
+
+    if(rows > (level + 1) * 10) {
+      setLevel(prev => prev + 1);
+      setDropTime(1000 / (level + 1) + 200);
+    }
+
     if (!isColliding(block, stage, {x: 0, y: 1})) {
       updateBlockPos({x: 0, y: 1, collided: false});
     } else {
@@ -86,7 +97,9 @@ const App: React.FC = () => {
             </>
           ) : (
             <>
-              <Display gameOver={gameOver} text={"text"} />
+              <Display text={`Score: ${score}`} gameOver={false} />
+              <Display text={`Rows: ${rows}`} gameOver={false} />
+              <Display text={`Level: ${level}`} gameOver={false} />
             </>
           )}
         </div>
