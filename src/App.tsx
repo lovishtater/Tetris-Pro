@@ -48,6 +48,7 @@ const App: React.FC = () => {
       setDropTime(1000);
     }
   }
+}
 
   console.log(block);
 
