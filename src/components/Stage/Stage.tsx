@@ -12,10 +12,10 @@ type props = {
 
 const Stage: React.FC<props> = ({ stage }) => {
     return (
-        <StyledStage>
+        <StyledStage id="stage">
             {stage.map((row, y) => {
                 return row.map((cell, x) => {
-                    return <Cell key={x} type={cell[0]} />;
+                    return <Cell key={x} type={cell[0]} cellmerged={cell[1]} />;
                 })
             })}
         </StyledStage>

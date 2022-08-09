@@ -49,8 +49,6 @@ const App: React.FC = () => {
   }
 }
 
-  // console.log(block);
-
   const handleStartGame = () : void => {
     // focus the window 
     if(gameArea.current) gameArea.current.focus();
@@ -59,7 +57,7 @@ const App: React.FC = () => {
     resetBlock();
     setScore(0);
     setRows(0);
-    setLevel(0);
+    setLevel(1);
     setGameOver(false);
   }
 
@@ -82,12 +80,38 @@ const App: React.FC = () => {
     }
   }
 
+  const mobileControlStart = (e: any): void => {
+    if (e.target?.id === "cell" && !gameOver && !isColliding(block, stage, {x: -1, y: 0})) {
+      if (e.target.getAttribute("type") != 0 && e.target.className.includes("clear")){
+        blockRotate(stage);
+      } else if (
+          e.touches[0].clientX < window.innerWidth / 2 &&
+          e.touches[0].clientY < (window.innerHeight / 3) * 2
+        ) {
+          moveBlock(-1);
+        } else if (
+          e.touches[0].clientX > window.innerWidth / 2 &&
+          e.touches[0].clientY < (window.innerHeight / 3) * 2
+        ) {
+          moveBlock(1);
+        } else if (e.touches[0].clientY > (window.innerHeight / 3) * 2) {
+          setDropTime(30);
+        }
+    }
+  };
+
+  const mobileControlEnd = (e: any): void => {
+    if (e.target?.id === "cell" && !gameOver) {
+      setDropTime(1000);
+    }
+  }
+
   useInterval(() => {
     drop();
   } , dropTime);
 
   return (
-    <StyledTetrisWrapper role='button' tabIndex={0} onKeyDown={move} onKeyUp={keyUp} ref={gameArea}>
+    <StyledTetrisWrapper role='button' tabIndex={0} onKeyDown={move} onKeyUp={keyUp} ref={gameArea} onTouchStart={mobileControlStart} onTouchEnd={mobileControlEnd}>
       <StyledTetris>
         <H1>Tetris Pro</H1>
         <div className="display">
