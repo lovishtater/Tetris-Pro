@@ -13,7 +13,7 @@ import { useInterval } from './hooks/useInterval';
 import { useGameStats } from './hooks/useGameStats';
 
 // Styles
-import {StyledTetrisWrapper, StyledTetris, GithubRepoButton, H1} from "./App.styles";
+import {StyledTetrisWrapper, StyledTetris, H1} from "./App.styles";
 
 const App: React.FC = () => {
   const [dropTime, setDropTime] = React.useState<null | number>(null);
