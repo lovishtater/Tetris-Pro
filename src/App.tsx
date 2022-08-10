@@ -83,21 +83,21 @@ const App: React.FC = () => {
 
   const mobileControlStart = (e: any): void => {
     if (e.target?.id === "cell" && !gameOver && !isColliding(block, stage, {x: -1, y: 0})) {
-      if (e.target.getAttribute("type") != 0 && e.target.className.includes("clear")){
+      if (e.target.getAttribute("type") != 0 && e.target.className.includes("clear")) {
         blockRotate(stage);
+      } else if (e.target.getAttribute("data-key") > STAGE_WIDTH * (STAGE_HEIGHT - 2)) {
+        setDropTime(30);
       } else if (
-          e.touches[0].clientX < window.innerWidth / 2 &&
-          e.touches[0].clientY < (window.innerHeight / 3) * 2
-        ) {
-          moveBlock(-1);
-        } else if (
-          e.touches[0].clientX > window.innerWidth / 2 &&
-          e.touches[0].clientY < (window.innerHeight / 3) * 2
-        ) {
-          moveBlock(1);
-        } else if (e.target.getAttribute("data-key") > STAGE_WIDTH*(STAGE_HEIGHT-1)){
-          setDropTime(30);
-        }
+        e.touches[0].clientX < window.innerWidth / 2 &&
+        e.touches[0].clientY < (window.innerHeight / 3) * 2
+      ) {
+        moveBlock(-1);
+      } else if (
+        e.touches[0].clientX > window.innerWidth / 2 &&
+        e.touches[0].clientY < (window.innerHeight / 3) * 2
+      ) {
+        moveBlock(1);
+      }
     }
   };
 
