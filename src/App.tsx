@@ -14,6 +14,7 @@ import { useGameStats } from './hooks/useGameStats';
 
 // Styles
 import {StyledTetrisWrapper, StyledTetris, H1} from "./App.styles";
+import { STAGE_HEIGHT, STAGE_WIDTH } from './setup';
 
 const App: React.FC = () => {
   const [dropTime, setDropTime] = React.useState<null | number>(null);
@@ -94,7 +95,7 @@ const App: React.FC = () => {
           e.touches[0].clientY < (window.innerHeight / 3) * 2
         ) {
           moveBlock(1);
-        } else if (e.touches[0].clientY > (window.innerHeight / 3) * 2) {
+        } else if (e.target.getAttribute("data-key") > STAGE_WIDTH*(STAGE_HEIGHT-1)){
           setDropTime(30);
         }
     }

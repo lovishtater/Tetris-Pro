@@ -15,7 +15,14 @@ const Stage: React.FC<props> = ({ stage }) => {
         <StyledStage id="stage">
             {stage.map((row, y) => {
                 return row.map((cell, x) => {
-                    return <Cell key={x} type={cell[0]} cellmerged={cell[1]} />;
+                    return (
+                      <Cell
+                        key={y * row.length + x}
+                        type={cell[0]}
+                        cellmerged={cell[1]}
+                        cellKey={y * row.length + x}
+                      />
+                    );
                 })
             })}
         </StyledStage>
